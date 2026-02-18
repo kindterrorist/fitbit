@@ -1,0 +1,13 @@
+<resources>
+    <string name="search_athletes">Search athletes</string>
+    <string name="add_athlete">Add</string>
+    <string name="filter_active_only">Active only</string>
+    <string name="empty_athletes">No athletes found</string>
+    <string name="loading">Loading…</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="athlete_name">Full name</string>
+    <string name="athlete_email">Email</string>
+    <string name="athlete_sport">Sport</string>
+    <string name="save">Save athlete</string>
+</resources>
