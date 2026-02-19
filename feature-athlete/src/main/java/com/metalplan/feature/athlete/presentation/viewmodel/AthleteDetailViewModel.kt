@@ -22,6 +22,7 @@ class AthleteDetailViewModel @Inject constructor(
     private val updateAthleteUseCase: UpdateAthleteUseCase,
     private val getAthleteByIdUseCase: GetAthleteByIdUseCase,
     private val timeProvider: TimeProvider
+    private val getAthleteByIdUseCase: GetAthleteByIdUseCase
 ) : ViewModel() {
 
     private val _formState = MutableStateFlow(AthleteFormState())
@@ -37,6 +38,7 @@ class AthleteDetailViewModel @Inject constructor(
                 sport = athlete.sport,
                 active = athlete.active,
                 createdAt = athlete.createdAt
+                active = athlete.active
             )
         }
     }
@@ -51,6 +53,7 @@ class AthleteDetailViewModel @Inject constructor(
             _formState.value = _formState.value.copy(isSaving = true, errorMessage = null)
             val now = timeProvider.nowMillis()
             val createdAt = _formState.value.createdAt ?: now
+            val now = System.currentTimeMillis()
             val athlete = Athlete(
                 id = _formState.value.id ?: java.util.UUID.randomUUID().toString(),
                 fullName = _formState.value.fullName,
@@ -65,6 +68,10 @@ class AthleteDetailViewModel @Inject constructor(
             } else {
                 updateAthleteUseCase(athlete)
             }
+                createdAt = now,
+                updatedAt = now
+            )
+            val result = if (_formState.value.id == null) createAthleteUseCase(athlete) else updateAthleteUseCase(athlete)
             _formState.value = when (result) {
                 is DomainResult.Error -> _formState.value.copy(isSaving = false, errorMessage = result.message)
                 is DomainResult.Success -> {
