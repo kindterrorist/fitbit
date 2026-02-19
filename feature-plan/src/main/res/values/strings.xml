@@ -1,0 +1,13 @@
+<resources>
+    <string name="create_plan_short">New</string>
+    <string name="filter_active_plans">Active plans only</string>
+    <string name="loading_plans">Loading plans…</string>
+    <string name="empty_plans">No training plans</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="plan_title">Plan title</string>
+    <string name="plan_goal">Primary goal</string>
+    <string name="plan_start_epoch_day">Start date (epoch day)</string>
+    <string name="plan_end_epoch_day">End date (epoch day)</string>
+    <string name="save_plan">Save training plan</string>
+</resources>
