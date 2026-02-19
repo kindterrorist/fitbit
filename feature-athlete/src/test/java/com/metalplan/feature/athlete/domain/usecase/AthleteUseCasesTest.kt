@@ -35,6 +35,7 @@ class AthleteUseCasesTest {
 
     @Test
     fun `update athlete persists modifications`() = runTest {
+    fun `update athlete updates timestamp`() = runTest {
         val athlete = sampleAthlete()
         createUseCase(athlete)
         updateUseCase(athlete.copy(fullName = "Updated"))

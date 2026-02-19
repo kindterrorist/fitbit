@@ -15,6 +15,7 @@ fun NavGraphBuilder.athleteGraph(
     navController: NavController,
     onViewPlans: (String) -> Unit
 ) {
+fun NavGraphBuilder.athleteGraph(navController: NavController) {
     composable(route = athleteListRoute) {
         AthleteListRoute(
             onAddAthlete = { navController.navigate(athleteDetailRoute) },
@@ -30,6 +31,7 @@ fun NavGraphBuilder.athleteGraph(
             athleteId = backStackEntry.arguments?.getString("athleteId"),
             onSaved = { navController.popBackStack() },
             onViewPlans = onViewPlans
+            onSaved = { navController.popBackStack() }
         )
     }
 
@@ -38,6 +40,7 @@ fun NavGraphBuilder.athleteGraph(
             athleteId = null,
             onSaved = { navController.popBackStack() },
             onViewPlans = onViewPlans
+            onSaved = { navController.popBackStack() }
         )
     }
 }

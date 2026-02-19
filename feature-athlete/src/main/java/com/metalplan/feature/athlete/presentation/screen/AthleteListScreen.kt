@@ -70,6 +70,7 @@ fun AthleteListScreen(
             TextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = state.query,
+                value = "",
                 onValueChange = onQueryChanged,
                 label = { Text(text = stringResource(id = R.string.search_athletes)) }
             )
@@ -86,6 +87,15 @@ fun AthleteListScreen(
                 )
                 state.isEmpty -> Text(text = stringResource(id = R.string.empty_athletes))
                 else -> {
+                Checkbox(checked = false, onCheckedChange = onActiveFilterChanged)
+                Text(text = stringResource(id = R.string.filter_active_only))
+            }
+
+            when (state) {
+                AthleteListUiState.Empty -> Text(text = stringResource(id = R.string.empty_athletes))
+                is AthleteListUiState.Error -> Text(text = state.message, color = MaterialTheme.colorScheme.error)
+                AthleteListUiState.Loading -> Text(text = stringResource(id = R.string.loading))
+                is AthleteListUiState.Content -> {
                     LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         items(state.athletes, key = { it.id }) { athlete ->
                             Card(

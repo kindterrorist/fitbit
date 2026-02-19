@@ -10,6 +10,11 @@ data class AthleteListUiState(
     val errorMessage: String? = null
 ) {
     val isEmpty: Boolean = !isLoading && errorMessage == null && athletes.isEmpty()
+sealed interface AthleteListUiState {
+    data object Loading : AthleteListUiState
+    data object Empty : AthleteListUiState
+    data class Content(val athletes: List<Athlete>) : AthleteListUiState
+    data class Error(val message: String) : AthleteListUiState
 }
 
 data class AthleteFormState(

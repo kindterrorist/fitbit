@@ -43,6 +43,7 @@ class AthleteDetailViewModelTest {
     @Test
     fun `save surfaces validation error`() = runTest {
         val viewModel = AthleteDetailViewModel(createUseCase, updateUseCase, getUseCase, timeProvider)
+        val viewModel = AthleteDetailViewModel(createUseCase, updateUseCase, getUseCase)
         coEvery { createUseCase.invoke(any()) } returns DomainResult.Error("error")
 
         viewModel.onNameChanged("A")
@@ -57,6 +58,7 @@ class AthleteDetailViewModelTest {
     @Test
     fun `load athlete populates form`() = runTest {
         val viewModel = AthleteDetailViewModel(createUseCase, updateUseCase, getUseCase, timeProvider)
+        val viewModel = AthleteDetailViewModel(createUseCase, updateUseCase, getUseCase)
         coEvery { getUseCase.invoke("1") } returns Athlete(
             id = "1",
             fullName = "Loaded",
@@ -65,6 +67,8 @@ class AthleteDetailViewModelTest {
             active = true,
             createdAt = 10,
             updatedAt = 12
+            createdAt = 1,
+            updatedAt = 1
         )
 
         viewModel.loadAthlete("1")

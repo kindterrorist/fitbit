@@ -37,5 +37,6 @@ private fun FitbitApp() {
             onViewPlans = { athleteId -> navController.navigate(buildTrainingPlanListRoute(athleteId)) }
         )
         trainingPlanGraph(navController)
+        athleteGraph(navController)
     }
 }
