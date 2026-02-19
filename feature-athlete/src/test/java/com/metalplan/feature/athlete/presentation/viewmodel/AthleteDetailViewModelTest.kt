@@ -1,11 +1,13 @@
 package com.metalplan.feature.athlete.presentation.viewmodel
 
 import com.metalplan.domain.common.DomainResult
+import com.metalplan.domain.common.TimeProvider
 import com.metalplan.feature.athlete.domain.model.Athlete
 import com.metalplan.feature.athlete.domain.usecase.CreateAthleteUseCase
 import com.metalplan.feature.athlete.domain.usecase.GetAthleteByIdUseCase
 import com.metalplan.feature.athlete.domain.usecase.UpdateAthleteUseCase
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -25,10 +27,12 @@ class AthleteDetailViewModelTest {
     private val createUseCase = mockk<CreateAthleteUseCase>()
     private val updateUseCase = mockk<UpdateAthleteUseCase>()
     private val getUseCase = mockk<GetAthleteByIdUseCase>()
+    private val timeProvider = mockk<TimeProvider>()
 
     @Before
     fun setUp() {
         kotlinx.coroutines.Dispatchers.setMain(dispatcher)
+        every { timeProvider.nowMillis() } returns 1_000L
     }
 
     @After
@@ -38,6 +42,7 @@ class AthleteDetailViewModelTest {
 
     @Test
     fun `save surfaces validation error`() = runTest {
+        val viewModel = AthleteDetailViewModel(createUseCase, updateUseCase, getUseCase, timeProvider)
         val viewModel = AthleteDetailViewModel(createUseCase, updateUseCase, getUseCase)
         coEvery { createUseCase.invoke(any()) } returns DomainResult.Error("error")
 
@@ -52,6 +57,7 @@ class AthleteDetailViewModelTest {
 
     @Test
     fun `load athlete populates form`() = runTest {
+        val viewModel = AthleteDetailViewModel(createUseCase, updateUseCase, getUseCase, timeProvider)
         val viewModel = AthleteDetailViewModel(createUseCase, updateUseCase, getUseCase)
         coEvery { getUseCase.invoke("1") } returns Athlete(
             id = "1",
@@ -59,6 +65,8 @@ class AthleteDetailViewModelTest {
             email = "loaded@test.com",
             sport = "Run",
             active = true,
+            createdAt = 10,
+            updatedAt = 12
             createdAt = 1,
             updatedAt = 1
         )
@@ -67,5 +75,6 @@ class AthleteDetailViewModelTest {
         advanceUntilIdle()
 
         assertEquals("Loaded", viewModel.formState.value.fullName)
+        assertEquals(10, viewModel.formState.value.createdAt)
     }
 }

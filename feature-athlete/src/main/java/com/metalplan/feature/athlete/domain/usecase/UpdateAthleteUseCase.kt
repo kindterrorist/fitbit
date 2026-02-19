@@ -13,6 +13,7 @@ class UpdateAthleteUseCase @Inject constructor(
         return when (val validation = athlete.validate()) {
             is ValidationResult.Invalid -> DomainResult.Error(validation.reason)
             ValidationResult.Valid -> {
+                repository.upsertAthlete(athlete)
                 repository.upsertAthlete(athlete.copy(updatedAt = System.currentTimeMillis()))
                 DomainResult.Success(Unit)
             }

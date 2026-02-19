@@ -3,6 +3,7 @@ package com.metalplan.feature.athlete.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.metalplan.domain.common.DomainResult
+import com.metalplan.domain.common.TimeProvider
 import com.metalplan.feature.athlete.domain.model.Athlete
 import com.metalplan.feature.athlete.domain.usecase.CreateAthleteUseCase
 import com.metalplan.feature.athlete.domain.usecase.GetAthleteByIdUseCase
@@ -19,6 +20,8 @@ import kotlinx.coroutines.launch
 class AthleteDetailViewModel @Inject constructor(
     private val createAthleteUseCase: CreateAthleteUseCase,
     private val updateAthleteUseCase: UpdateAthleteUseCase,
+    private val getAthleteByIdUseCase: GetAthleteByIdUseCase,
+    private val timeProvider: TimeProvider
     private val getAthleteByIdUseCase: GetAthleteByIdUseCase
 ) : ViewModel() {
 
@@ -33,6 +36,8 @@ class AthleteDetailViewModel @Inject constructor(
                 fullName = athlete.fullName,
                 email = athlete.email,
                 sport = athlete.sport,
+                active = athlete.active,
+                createdAt = athlete.createdAt
                 active = athlete.active
             )
         }
@@ -46,6 +51,8 @@ class AthleteDetailViewModel @Inject constructor(
     fun save(onSuccess: () -> Unit) {
         viewModelScope.launch {
             _formState.value = _formState.value.copy(isSaving = true, errorMessage = null)
+            val now = timeProvider.nowMillis()
+            val createdAt = _formState.value.createdAt ?: now
             val now = System.currentTimeMillis()
             val athlete = Athlete(
                 id = _formState.value.id ?: java.util.UUID.randomUUID().toString(),
@@ -53,6 +60,14 @@ class AthleteDetailViewModel @Inject constructor(
                 email = _formState.value.email,
                 sport = _formState.value.sport,
                 active = _formState.value.active,
+                createdAt = createdAt,
+                updatedAt = now
+            )
+            val result = if (_formState.value.id == null) {
+                createAthleteUseCase(athlete)
+            } else {
+                updateAthleteUseCase(athlete)
+            }
                 createdAt = now,
                 updatedAt = now
             )

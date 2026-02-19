@@ -69,11 +69,24 @@ fun AthleteListScreen(
         ) {
             TextField(
                 modifier = Modifier.fillMaxWidth(),
+                value = state.query,
                 value = "",
                 onValueChange = onQueryChanged,
                 label = { Text(text = stringResource(id = R.string.search_athletes)) }
             )
             Row {
+                Checkbox(checked = state.activeOnly, onCheckedChange = onActiveFilterChanged)
+                Text(text = stringResource(id = R.string.filter_active_only))
+            }
+
+            when {
+                state.isLoading -> Text(text = stringResource(id = R.string.loading))
+                state.errorMessage != null -> Text(
+                    text = state.errorMessage,
+                    color = MaterialTheme.colorScheme.error
+                )
+                state.isEmpty -> Text(text = stringResource(id = R.string.empty_athletes))
+                else -> {
                 Checkbox(checked = false, onCheckedChange = onActiveFilterChanged)
                 Text(text = stringResource(id = R.string.filter_active_only))
             }
