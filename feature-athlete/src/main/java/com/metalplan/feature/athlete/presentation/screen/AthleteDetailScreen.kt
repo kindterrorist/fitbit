@@ -26,6 +26,7 @@ import com.metalplan.feature.athlete.presentation.viewmodel.AthleteDetailViewMod
 fun AthleteDetailRoute(
     athleteId: String?,
     onSaved: () -> Unit,
+    onViewPlans: (String) -> Unit,
     viewModel: AthleteDetailViewModel = hiltViewModel()
 ) {
     LaunchedEffect(athleteId) {
@@ -69,6 +70,14 @@ fun AthleteDetailRoute(
                 enabled = !form.isSaving
             ) {
                 Text(text = stringResource(id = R.string.save))
+            }
+            if (athleteId != null) {
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = { onViewPlans(athleteId) }
+                ) {
+                    Text(text = stringResource(id = R.string.view_plans))
+                }
             }
         }
     }

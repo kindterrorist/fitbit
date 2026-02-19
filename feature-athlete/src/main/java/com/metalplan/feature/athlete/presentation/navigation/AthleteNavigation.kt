@@ -11,6 +11,10 @@ import com.metalplan.feature.athlete.presentation.screen.AthleteListRoute
 const val athleteListRoute = "athlete/list"
 private const val athleteDetailRoute = "athlete/detail"
 
+fun NavGraphBuilder.athleteGraph(
+    navController: NavController,
+    onViewPlans: (String) -> Unit
+) {
 fun NavGraphBuilder.athleteGraph(navController: NavController) {
     composable(route = athleteListRoute) {
         AthleteListRoute(
@@ -25,6 +29,8 @@ fun NavGraphBuilder.athleteGraph(navController: NavController) {
     ) { backStackEntry ->
         AthleteDetailRoute(
             athleteId = backStackEntry.arguments?.getString("athleteId"),
+            onSaved = { navController.popBackStack() },
+            onViewPlans = onViewPlans
             onSaved = { navController.popBackStack() }
         )
     }
@@ -32,6 +38,8 @@ fun NavGraphBuilder.athleteGraph(navController: NavController) {
     composable(route = athleteDetailRoute) {
         AthleteDetailRoute(
             athleteId = null,
+            onSaved = { navController.popBackStack() },
+            onViewPlans = onViewPlans
             onSaved = { navController.popBackStack() }
         )
     }

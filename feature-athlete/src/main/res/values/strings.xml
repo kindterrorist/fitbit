@@ -10,4 +10,5 @@
     <string name="athlete_email">Email</string>
     <string name="athlete_sport">Sport</string>
     <string name="save">Save athlete</string>
+    <string name="view_plans">View plans</string>
 </resources>

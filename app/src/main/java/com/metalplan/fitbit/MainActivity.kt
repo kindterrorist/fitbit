@@ -9,6 +9,8 @@ import androidx.navigation.compose.rememberNavController
 import com.metalplan.core.ui.theme.FitbitTheme
 import com.metalplan.feature.athlete.presentation.navigation.athleteGraph
 import com.metalplan.feature.athlete.presentation.navigation.athleteListRoute
+import com.metalplan.feature.plan.presentation.navigation.buildTrainingPlanListRoute
+import com.metalplan.feature.plan.presentation.navigation.trainingPlanGraph
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,6 +32,11 @@ private fun FitbitApp() {
         navController = navController,
         startDestination = athleteListRoute
     ) {
+        athleteGraph(
+            navController = navController,
+            onViewPlans = { athleteId -> navController.navigate(buildTrainingPlanListRoute(athleteId)) }
+        )
+        trainingPlanGraph(navController)
         athleteGraph(navController)
     }
 }
